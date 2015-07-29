@@ -4,6 +4,8 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
     './src/index'
   ],
   output: {
@@ -12,6 +14,7 @@ module.exports = {
     publicPath: '/dist/'
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
   resolve: {
@@ -20,7 +23,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loaders: ['react-hot', 'babel'],
       exclude: /node_modules/,
       include: path.join(__dirname, 'src')
     }]
