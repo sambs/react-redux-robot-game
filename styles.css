@@ -1,0 +1,57 @@
+body {
+  background: #f3f3f3;
+  font-family: courier, monospace;
+}
+
+.fa {
+  line-height: inherit;
+}
+
+.game {
+  position: relative;
+  margin: 100px auto;
+}
+
+.status {
+  padding: 5px;
+  text-align: right;
+}
+
+.status.game-over {
+  color: #f00;
+  font-weight: bold;
+}
+
+.board {
+  position: relative;
+  background: #fff;
+}
+
+.player {
+  position: absolute;
+  text-align: center;
+  font-size: 30px;
+}
+
+.invalid-position {
+  color: #f00;
+}
+
+.diamond {
+  position: absolute;
+  font-size: 30px;
+  text-align: center;
+}
+
+.block {
+  position: absolute;
+  background: #f3f3f3;
+}
+
+.restart-button {
+  position: absolute;
+  top: 8px;
+  right: 1%;
+  line-height: 20px;
+  font-family: courier, monospace;
+}
