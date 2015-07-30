@@ -21,6 +21,14 @@ export function rotateAnticlockwise() {
   };
 }
 
+export function defineMacro(index, moves) {
+  return {
+    type: types.DEFINE_MACRO,
+    index,
+    moves
+  };
+}
+
 export function execMacro(index) {
   return {
     type: types.EXEC_MACRO,

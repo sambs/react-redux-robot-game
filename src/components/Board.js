@@ -11,8 +11,47 @@ export default class Board extends Component {
     player: PropTypes.object.isRequired,
     blocks: PropTypes.array.isRequired,
     diamonds: PropTypes.array.isRequired,
-    validPosition: PropTypes.bool.isRequired
+    validPosition: PropTypes.bool.isRequired,
+    movesLeft: PropTypes.number.isRequired,
+    moveForward: PropTypes.func.isRequired,
+    rotateClockwise: PropTypes.func.isRequired,
+    rotateAnticlockwise: PropTypes.func.isRequired,
+    execMacro: PropTypes.func.isRequired,
+    restart: PropTypes.func.isRequired
   };
+
+  handleKeyPress(e) {
+    switch (e.which) {
+      case 38: // up
+        this.props.moveForward();
+        break;
+      case 39: // right
+        this.props.rotateClockwise();
+        break;
+      case 37: // left
+        this.props.rotateAnticlockwise();
+        break;
+      case 49: // 1
+        this.props.execMacro(0);
+        break;
+      case 50: // 2
+        this.props.execMacro(1);
+        break;
+      case 82: // R
+        this.props.restart(1);
+        break;
+      default:
+        break;
+    }
+  }
+
+  componentWillMount() {
+    window.onkeydown = ::this.handleKeyPress;
+  }
+
+  componentWillUnmount() {
+    window.onkeydown = void 0;
+  }
 
   render() {
     const {

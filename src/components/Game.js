@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Board from './Board';
 import Status from './Status';
+import MacroInput from './MacroInput';
 import RestartButton from './RestartButton';
 
 export default class Game extends Component {
@@ -11,6 +12,7 @@ export default class Game extends Component {
   static propTypes = {
     board: PropTypes.object.isRequired,
     player: PropTypes.object.isRequired,
+    macros: PropTypes.array.isRequired,
     validPosition: PropTypes.bool.isRequired,
     complete: PropTypes.bool.isRequired,
     failed: PropTypes.bool.isRequired,
@@ -22,39 +24,6 @@ export default class Game extends Component {
     restart: PropTypes.func.isRequired
   };
 
-  handleKeyPress(e) {
-    switch (e.which) {
-      case 38: // up
-        this.props.moveForward();
-        break;
-      case 39: // right
-        this.props.rotateClockwise();
-        break;
-      case 37: // left
-        this.props.rotateAnticlockwise();
-        break;
-      case 49: // 1
-        this.props.execMacro(0);
-        break;
-      case 50: // 2
-        this.props.execMacro(1);
-        break;
-      case 82: // 2
-        this.props.restart(1);
-        break;
-      default:
-        break;
-    }
-  }
-
-  componentWillMount() {
-    window.onkeydown = ::this.handleKeyPress;
-  }
-
-  componentWillUnmount() {
-    window.onkeydown = void 0;
-  }
-
   render() {
     const {
       board,
@@ -63,27 +32,49 @@ export default class Game extends Component {
       diamonds,
       validPosition,
       scale,
+      macros,
       complete,
       failed,
       movesLeft,
-      restart
+      moveForward,
+      rotateClockwise,
+      rotateAnticlockwise,
+      execMacro,
+      defineMacro,
+      restart,
     } = this.props;
 
     const gameStyle = {
       width: scale * board.width
     };
 
+    const macroInputDisabled = movesLeft < 10;
+
     return (
       <div className="game" style={gameStyle}>
         <h1>Robot</h1>
+        <RestartButton complete={complete} failed={failed} restart={restart} />
         <Board size={board}
                scale={scale}
                player={player}
                validPosition={validPosition}
                diamonds={diamonds}
-               blocks={blocks} />
+               blocks={blocks}
+               movesLeft={movesLeft}
+               moveForward={moveForward}
+               rotateClockwise={rotateClockwise}
+               rotateAnticlockwise={rotateAnticlockwise}
+               execMacro={execMacro}
+               restart={restart} />
+        {macros.map((macro, index) => {
+          return <MacroInput index={index}
+                             key={index}
+                             value={macro}
+                             defineMacro={defineMacro}
+                             disabled={macroInputDisabled}
+                             autoFocus={index === 0} />;
+        })}
         <Status complete={complete} failed={failed} movesLeft={movesLeft} />
-        <RestartButton complete={complete} failed={failed} restart={restart} />
       </div>
     );
   }

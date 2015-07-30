@@ -12,6 +12,31 @@ body {
   margin: 100px auto;
 }
 
+.macro-input {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.macro-input-label {
+  white-space: nowrap;
+}
+
+.macro-input-input {
+  flex-grow: 1;
+  min-width: 50px;
+  font-size: 20px;
+  font-family: FontAwesome;
+  line-height: 20px;
+  padding: 2px 5px;
+  border: 0;
+}
+
+.macro-input-input::-webkit-input-placeholder {
+  font-family: courier, monospace;
+  font-size: 13px;
+}
+
 .status {
   padding: 5px;
   text-align: right;

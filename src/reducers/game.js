@@ -10,15 +10,19 @@ let defaultState = {
   blocks: [{ x: 2, y: 1 }, { x: 3, y: 0 }],
   diamonds: [{ x: 2, y: 0 }, { x: 4, y: 0 }],
   movesLeft: 10,
-  macros: [
-    [types.MOVE_FORWARD, types.MOVE_FORWARD, types.ROTATE_ANTICLOCKWISE],
-    [types.MOVE_FORWARD, types.ROTATE_CLOCKWISE, types.MOVE_FORWARD]
-  ]
+  macros: [[], []]
 };
 
 export default function game(state = defaultState, action) {
   if (action.type === types.RESTART) {
-    state = defaultState;
+    state = {
+      ...state,
+      player: defaultState.player,
+      diamonds: defaultState.diamonds,
+      movesLeft: 10,
+      complete: false,
+      failed: false
+    };
   }
 
   if (state.complete || state.failed) return state;
@@ -26,6 +30,7 @@ export default function game(state = defaultState, action) {
   let player;
 
   switch (action.type) {
+
     case types.EXEC_MACRO:
       let macroActions = state.macros[action.index];
       return macroActions.reduce((mstate, type) => {
@@ -80,13 +85,19 @@ export default function game(state = defaultState, action) {
     !(diamond.x === player.position.x && diamond.y === player.position.y)
   );
 
+  let macros = state.macros.map((macro, index) => {
+    return action.type === types.DEFINE_MACRO && action.index === index ?
+      action.moves : macro;
+  });
+
   return {
     ...state,
     player,
     movesLeft,
     validPosition,
     diamonds,
-    failed: !validPosition || movesLeft === 0,
+    macros,
+    failed: (!validPosition) || movesLeft === 0,
     complete: diamonds.length === 0
   };
 }
